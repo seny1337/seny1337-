@@ -1,0 +1,89 @@
+﻿<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1221 Systems | Chat</title>
+  <link rel="stylesheet" href="./style/style.css" />
+</head>
+
+<body>
+  <div class="side-nav">
+    <div class="nav-item">
+      <span class="tooltip">а как проверить, работает л...</span>
+      <div class="dot"></div>
+    </div>
+    <div class="nav-item">
+      <span class="tooltip">что это? я если что забыл за...</span>
+      <div class="dot"></div>
+    </div>
+    <div class="nav-item active">
+      <span class="tooltip">погоди, а что я сделал вооб...</span>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <div class="chat-page">
+    <header class="chat-header">
+      <a class="back-home" href="../button.html" aria-label="Вернуться на главную">
+        Вернуться на главную
+      </a>
+
+      <div class="chat-header__meta">
+        <span class="status-dot"></span>
+        <span>Assistant Online</span>
+      </div>
+    </header>
+
+    <main class="chat-shell">
+      <section id="chat-messages" class="chat-messages" aria-live="polite">
+        <article class="message message--bot message--enter">
+          <img src="./assets/mascot.png" alt="Маскот" class="message__avatar" />
+          <div class="message__content">
+            <div class="message__bubble">
+              Привет! Я AI-помощник 1221 systems. Расскажи задачу — помогу с решением.
+            </div>
+            <div class="message__meta">
+              <time class="message__time">сейчас</time>
+              <button class="message__copy" type="button">Копировать</button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <div id="bot-indicator" class="bot-indicator" hidden>
+        <span>Бот печатает</span>
+        <span class="bot-indicator__dots"><span></span><span></span><span></span></span>
+      </div>
+
+      <section class="chat-toolbar" aria-label="Быстрые действия">
+        <div class="quick-actions">
+          <button class="quick-chip" type="button" data-prompt="Как оплачивается больничный?">Как оплачивается
+            больничный?</button>
+          <button class="quick-chip" type="button" data-prompt="Где скачать расчетный лист?">Где скачать расчетный
+            лист?</button>
+          <button class="quick-chip" type="button" data-prompt="Сколько дней отпуска
+у меня осталось?">Сколько дней отпуска
+            у меня осталось?</button>
+        </div>
+      </section>
+
+      <form id="chat-form" class="chat-form" autocomplete="off">
+        <textarea id="chat-input" class="chat-input" placeholder="Напиши сообщение..." maxlength="500" rows="1"
+          required></textarea>
+        <button id="chat-stop" class="chat-stop" type="button" hidden>Стоп</button>
+        <button id="chat-send" class="chat-send" type="submit">
+          <img style="padding-top: 5px; align-items: center; padding-left: 5px;" src="/assets/Vector.png"
+            alt="Отправить" />
+        </button>
+      </form>
+
+      <button id="scroll-latest" class="scroll-latest" type="button" hidden>Новые сообщения ↓</button>
+    </main>
+  </div>
+
+  <script src="./script/script.js" defer></script>
+</body>
+
+</html>

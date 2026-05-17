@@ -1,0 +1,689 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1221Systems — Вход для сотрудников</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #78c832;
+      --primary-dark: #6ab528;
+      --primary-hover: #5a9a20;
+      --text-primary: #1a1a1a;
+      --text-secondary: #777;
+      --text-light: #999;
+      --bg-gradient-start: #f5f7fa;
+      --bg-gradient-end: #e8e8e8;
+      --border-color: #d0d0d0;
+      --error-color: #e74c3c;
+      --success-color: #27ae60;
+      --shadow-1: rgba(0, 0, 0, 0.1);
+      --shadow-2: rgba(0, 0, 0, 0.05);
+      --icon-yellow: #fbbf24;
+      --icon-yellow-hover: #f59e0b;
+      /* рџ’¬ РљРЅРѕРїРєР° С‡Р°С‚Р° вЂ” СЃРІРµС‚Р»Р°СЏ С‚РµРјР° */
+      --chat-bg: rgba(0, 0, 0, 0.05);
+      --chat-bg-hover: rgba(0, 0, 0, 0.1);
+      --chat-icon: #333;
+    }
+
+    body {
+      font-family: 'Montserrat', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.4s ease;
+    }
+
+    body.dark-mode {
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --text-light: #888;
+      --bg-gradient-start: #0f172a;
+      --bg-gradient-end: #1e293b;
+      --border-color: #334155;
+      /* рџ’¬ РљРЅРѕРїРєР° С‡Р°С‚Р° вЂ” С‚С‘РјРЅР°СЏ С‚РµРјР° */
+      --chat-bg: rgba(255, 255, 255, 0.1);
+      --chat-bg-hover: rgba(255, 255, 255, 0.15);
+      --chat-icon: #ffffff;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 36px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 2.5px solid #1a1a1a;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      height: 90px;
+      transition: all 0.4s ease;
+    }
+
+    body.dark-mode header {
+      background: rgba(15, 23, 42, 0.85);
+      border-bottom-color: #334155;
+    }
+
+    .logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 32px;
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: #1a1a1a;
+      transform: scaleY(1.25);
+      transform-origin: left center;
+      transition: color 0.4s ease;
+    }
+
+    body.dark-mode .logo {
+      color: #ffffff;
+    }
+
+    .logo strong {
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ===== РљРќРћРџРљРђ РўР•РњР« ===== */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 48px;
+      padding: 0 20px 0 16px;
+      border-radius: 50px;
+      background: var(--chat-bg);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    body.dark-mode .theme-toggle {
+      color: #ffffff;
+    }
+
+    .theme-toggle:hover {
+      background: var(--chat-bg-hover);
+      transform: translateY(-2px);
+    }
+
+    /* рџЊ™вЂпёЏ Р–С‘Р»С‚С‹Рµ РёРєРѕРЅРєРё С‚РµРјС‹ */
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--icon-yellow);
+      stroke: var(--icon-yellow);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 1px 2px rgba(251, 191, 36, 0.3));
+    }
+
+    .theme-toggle:hover svg {
+      stroke: var(--icon-yellow-hover);
+      fill: var(--icon-yellow-hover);
+      filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.4));
+      transform: scale(1.1);
+    }
+
+    /* ===== РљРќРћРџРљРђ Р§РђРўРђ вЂ” Р°РґР°РїС‚РёРІРЅР°СЏ РїРѕРґ С‚РµРјСѓ ===== */
+    .chat-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--chat-bg);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .chat-btn:hover {
+      background: var(--chat-bg-hover);
+      transform: scale(1.08);
+    }
+
+    .chat-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: var(--chat-icon);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.4s ease;
+    }
+
+    /* ===== WRAPPER ===== */
+    .below-header {
+      padding-top: 90px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .below-header main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 64px 56px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 20px 60px var(--shadow-1), 0 8px 20px var(--shadow-2);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: slideUp 0.6s ease-out;
+    }
+
+    body.dark-mode .card {
+      background: #1e293b;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 30px 80px var(--shadow-1), 0 12px 30px var(--shadow-2);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(120, 200, 50, 0.25);
+    }
+
+    .logo-icon svg {
+      width: 36px;
+      height: 36px;
+      fill: none;
+      stroke: white;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .card h1 {
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    .card .subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .card .subtitle strong {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .greeting {
+      font-size: 15px;
+      color: var(--primary-color);
+      margin-bottom: 4px;
+      text-align: center;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .form-group input[type="text"] {
+      width: 100%;
+      height: 58px;
+      padding: 0 18px;
+      border: 2px solid var(--border-color);
+      border-radius: 14px;
+      font-size: 16px;
+      color: var(--text-primary);
+      background: #fafafa;
+      outline: none;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body.dark-mode .form-group input[type="text"] {
+      background: #0f172a;
+      color: #ffffff;
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-light);
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary-color);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(120, 200, 50, 0.1);
+    }
+
+    body.dark-mode .form-group input:focus {
+      background: #1e293b;
+    }
+
+    .form-group input.error {
+      border-color: var(--error-color);
+      animation: shake 0.4s ease-in-out;
+    }
+
+    .form-group input.success {
+      border-color: var(--success-color);
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-8px);
+      }
+
+      75% {
+        transform: translateX(8px);
+      }
+    }
+
+    .error-message {
+      color: var(--error-color);
+      font-size: 13px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .checkbox-wrapper input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+      cursor: pointer;
+      accent-color: var(--primary-color);
+    }
+
+    .checkbox-wrapper label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .btn-login {
+      width: 100%;
+      height: 58px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-login::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .btn-login:hover::before {
+      left: 100%;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(120, 200, 50, 0.35);
+    }
+
+    .btn-login:active {
+      transform: translateY(-1px) scale(0.98);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-login.loading {
+      color: transparent;
+      pointer-events: none;
+    }
+
+    .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 22px;
+      height: 22px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    .btn-login.loading .spinner {
+      display: block;
+    }
+
+    @keyframes spin {
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    .forgot-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .forgot-link:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+
+    .below-header footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 16px 20px;
+        height: 76px;
+      }
+
+      .logo {
+        font-size: 26px;
+      }
+
+      .theme-toggle {
+        padding: 0 14px 0 12px;
+        gap: 6px;
+      }
+
+      .theme-toggle span {
+        font-size: 12px;
+      }
+
+      .card {
+        padding: 48px 28px;
+        border-radius: 20px;
+      }
+
+      .card h1 {
+        font-size: 26px;
+      }
+
+      .form-group input[type="text"] {
+        height: 54px;
+      }
+
+      .btn-login {
+        height: 54px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo"><strong>1221</strong>SYSTEMS</div>
+    <div class="header-controls">
+      <!-- 🌙☀️ Кнопка темы с текстом и жёлтой иконкой -->
+      <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        <svg viewBox="0 0 24 24" id="themeIcon">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+        <span>Изменить тему</span>
+      </button>
+      <!-- 💬 Кнопка чата — адаптивная -->
+      <button class="chat-btn" aria-label="Чат">
+        <svg viewBox="0 0 24 24">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          <circle cx="8" cy="10" r="1" />
+          <circle cx="12" cy="10" r="1" />
+          <circle cx="16" cy="10" r="1" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- КОНТЕНТ ПОД ХЕДЕРОМ -->
+  <div class="below-header">
+    <main>
+      <div class="card">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="16" rx="2" />
+            <line x1="8" y1="8" x2="16" y2="8" />
+            <line x1="8" y1="12" x2="16" y2="12" />
+            <line x1="8" y1="16" x2="12" y2="16" />
+          </svg>
+        </div>
+        <div class="greeting" id="greeting">Доброе утро!</div>
+        <h1>Вход для сотрудников</h1>
+        <p class="subtitle">Добро пожаловать на портал сотрудника компании <strong>1221Systems</strong></p>
+
+        <form id="loginForm" autocomplete="off">
+          <div class="form-group">
+            <label for="employee-id">Введи табельный номер для начала работы</label>
+            <input type="text" id="employee-id" name="employee-id" placeholder="Например: Т1001" required>
+            <div class="error-message" id="errorMessage">Пожалуйста, введите корректный табельный номер</div>
+          </div>
+
+          <div class="checkbox-wrapper">
+            <input type="checkbox" id="remember" name="remember">
+            <label for="remember">Запомнить меня</label>
+          </div>
+
+          <button type="submit" class="btn-login" id="loginBtn">
+            Войти
+            <div class="spinner"></div>
+          </button>
+        </form>
+
+        <a href="login.html" class="forgot-link">Забыли табельный номер?</a>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2026 1221Systems. Все права защищены.
+    </footer>
+  </div>
+
+  <script>
+    // Приветствие по времени
+    function updateGreeting() {
+      const hour = new Date().getHours();
+      const greetingEl = document.getElementById('greeting');
+      if (hour < 6) greetingEl.textContent = 'Доброй ночи!';
+      else if (hour < 12) greetingEl.textContent = 'Доброе утро!';
+      else if (hour < 18) greetingEl.textContent = 'Добрый день!';
+      else greetingEl.textContent = 'Добрый вечер!';
+    }
+    updateGreeting();
+
+    // Переключение темы (Луна <-> Солнце)
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const body = document.body;
+
+    const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    const sunIcon = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
+
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      themeIcon.innerHTML = body.classList.contains('dark-mode') ? sunIcon : moonIcon;
+    });
+
+    // Валидация и отправка
+    const form = document.getElementById('loginForm');
+    const employeeInput = document.getElementById('employee-id');
+    const loginBtn = document.getElementById('loginBtn');
+    const errorMessage = document.getElementById('errorMessage');
+    const chatButton = document.querySelector('.chat-btn');
+
+    const AUTH_FLAG_KEY = 'ai_assistant_auth';
+    const AUTH_USER_KEY = 'ai_assistant_user';
+
+    const isValidEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    const isValidEmployeeId = (value) => /^[TТ]?\d{3,10}$/i.test(value.replace(/\s+/g, ''));
+
+    const showError = (text) => {
+      errorMessage.textContent = text;
+      errorMessage.classList.add('show');
+      employeeInput.classList.add('error');
+      employeeInput.classList.remove('success');
+    };
+
+    chatButton?.addEventListener('click', () => {
+      window.location.href = '../chat.html';
+    });
+
+    employeeInput.addEventListener('input', () => {
+      employeeInput.classList.remove('error', 'success');
+      errorMessage.classList.remove('show');
+      if (employeeInput.value.trim().length > 0) {
+        employeeInput.classList.add('success');
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const employeeId = employeeInput.value.trim();
+
+      if (!employeeId) {
+        showError('Введите табельный номер или корпоративную почту.');
+        return;
+      }
+
+      if (!isValidEmail(employeeId) && !isValidEmployeeId(employeeId)) {
+        showError('Неверный формат. Используйте табельный номер (например, T1001) или email.');
+        return;
+      }
+
+      loginBtn.disabled = true;
+      loginBtn.classList.add('loading');
+      await new Promise(resolve => setTimeout(resolve, 900));
+
+      localStorage.setItem(AUTH_FLAG_KEY, 'true');
+      localStorage.setItem(AUTH_USER_KEY, employeeId);
+
+      window.location.href = '../chat.html';
+    });
+  </script>
+
+</body>
+
+</html>
